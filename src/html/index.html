@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf4f2">
+  <meta name="description" content="TransporteSeguro explora cómo acompañar a estudiantes de Unidades Educativas o Instituciones Universitarias de Quito que viajan solos y combinan varios transportes.">
+  <title>TransporteSeguro | Movilidad estudiantil en Quito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="topbar navbar navbar-expand-md">
+    <div class="topbar-inner">
+      <a class="brand" href="#inicio" aria-label="TransporteSeguro, inicio"><span class="brand-mark" aria-hidden="true">TS</span>TransporteSeguro</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primary-navigation" aria-controls="primary-navigation" aria-expanded="false" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="primary-navigation">
+      <nav class="nav-links navbar-nav" aria-label="Navegación principal">
+        <a class="nav-link" href="#investigacion">La investigación</a>
+        <a class="nav-link" href="#familias">Para familias</a>
+        <a class="nav-link nav-cta" href="#lista">Participa</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <img class="hero-photo" src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=2200&q=85" alt="Autobús de pasajeros preparado para iniciar un recorrido" fetchpriority="high">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <span class="eyebrow">Movilidad estudiantil · Quito</span>
+          <h1 id="hero-title"><span>Transporte</span><span>Seguro</span></h1>
+          <p class="hero-copy">¿Tu hijo viaja solo y combina varios transportes para llegar a una Unidad Educativa Fiscal? Queremos entender cómo acompañar ese trayecto sin que tengas que interrumpir tu jornada para saber dónde está.</p>
+          <div class="hero-actions">
+            <a class="button button-light" href="#lista">Quiero contar mi experiencia</a>
+            <a class="text-link" href="#investigacion">Qué queremos validar</a>
+          </div>
+        </div>
+        <aside class="phone-showcase" aria-label="Vista previa ilustrativa de la aplicación">
+          <div class="phone-demo">
+            <span class="phone-caption">Así podría verse la app</span>
+            <div class="phone">
+              <div class="phone-screen">
+                <div class="phone-status"><span>9:41</span><span aria-hidden="true">● ● ●</span></div>
+                <div class="app-topline"><span class="app-brand">TransporteSeguro</span><span class="app-avatar" aria-hidden="true">M</span></div>
+                <div class="phone-panel" id="phone-panel" role="tabpanel" aria-labelledby="phone-tab-route" aria-live="polite" data-screen="route">
+                  <p class="app-greeting">Buenos días, María</p>
+                  <h2 class="app-title">El viaje de Mateo</h2>
+                  <p class="app-date">Lunes, 12 de octubre · Ida a clases</p>
+                  <div class="app-card">
+                    <div class="app-card-heading"><span id="phone-card-title">Ruta planificada</span><span class="app-chip" id="phone-chip">2 tramos</span></div>
+                    <div class="map-preview" role="img" aria-label="Mapa ilustrativo de Quito con rutas de bus, Trolebús y Metro">
+                      <svg class="route-map" data-active-route="all" viewBox="0 0 320 176" aria-hidden="true">
+                        <path class="map-road" d="M-10 30 335 145M-15 90 300 -10M15 185 235 -10M95 190 340 35M-10 145 320 55M150 -10 160 185M255 -10 100 185M-10 5 330 95"/>
+                        <path class="map-route map-route-bus-one" d="M30 143C72 128 79 97 122 99S177 122 200 85 255 49 291 40"/>
+                        <path class="map-route map-route-bus-two" d="M42 39C86 44 100 69 136 72S185 55 219 57 260 82 282 118"/>
+                        <path class="map-route map-route-trolley" d="M66 157C92 131 111 103 145 88S204 69 257 27"/>
+                        <path class="map-route map-route-metro" d="M43 112C82 109 105 112 143 111S206 107 277 91"/>
+                        <circle class="map-stop" cx="122" cy="99" r="4"/>
+                        <circle class="map-stop" cx="200" cy="85" r="4"/>
+                        <circle class="map-stop" cx="145" cy="88" r="4"/>
+                        <circle class="map-user-halo" id="map-user-halo" cx="122" cy="99" r="13"/>
+                        <circle class="map-user-marker" id="map-user-marker" cx="122" cy="99" r="5"/>
+                        <rect class="map-label-bg" id="map-user-label-bg" x="132" y="89" width="52" height="19" rx="9"/>
+                        <text class="map-label" id="map-user-label" x="158" y="102" text-anchor="middle">Mateo</text>
+                      </svg>
+                      <span class="map-city-label">QUITO · MAPA DE DEMOSTRACIÓN</span>
+                    </div>
+                    <div class="map-legend" aria-label="Rutas mostradas en el mapa">
+                      <button class="route-filter" type="button" data-route-filter="bus-one" aria-pressed="false"><i class="legend-dot bus-one"></i>Bus 1</button>
+                      <button class="route-filter" type="button" data-route-filter="bus-two" aria-pressed="false"><i class="legend-dot bus-two"></i>Bus 2</button>
+                      <button class="route-filter" type="button" data-route-filter="trolley" aria-pressed="false"><i class="legend-dot trolley"></i>Trole</button>
+                      <button class="route-filter" type="button" data-route-filter="metro" aria-pressed="false"><i class="legend-dot metro"></i>Metro</button>
+                      <button class="route-filter" type="button" data-route-filter="all" aria-pressed="true">Todas</button>
+                    </div>
+                    <p class="phone-interaction-status" id="route-filter-status" aria-live="polite">Viendo todas las rutas ilustrativas</p>
+                    <div class="phone-route-summary"><strong>Casa <span aria-hidden="true">→</span> Centro de estudios</strong><small>Bus · transbordo · destino</small></div>
+                    <div class="app-progress" aria-hidden="true"><span></span></div>
+                    <p class="app-footnote" id="phone-footnote">Ejemplo visual · sin datos en tiempo real</p>
+                  </div>
+                  <div class="app-alert"><span class="app-alert-icon" aria-hidden="true">✓</span><span><strong id="phone-alert-title">Aviso a la familia</strong><small id="phone-alert-copy">Notificación al llegar · idea en desarrollo</small></span></div>
+                  <button class="phone-action" id="advance-trip" type="button" hidden>Avanzar trayecto <span aria-hidden="true">→</span></button>
+                  <button class="phone-action" id="toggle-sharing" type="button" aria-pressed="true" hidden>Pausar ubicación compartida <span aria-hidden="true">Ⅱ</span></button>
+                </div>
+                <div class="app-bottom-nav" aria-hidden="true"><span class="selected">⌂<br>Viaje</span><span>◷<br>Avisos</span><span>♡<br>Familia</span></div>
+              </div>
+            </div>
+            <div class="phone-tabs" role="tablist" aria-label="Funciones ilustradas de la aplicación">
+              <button class="phone-tab" type="button" id="phone-tab-route" role="tab" aria-selected="true" aria-controls="phone-panel" data-phone-screen="route">Ruta</button>
+              <button class="phone-tab" type="button" id="phone-tab-trip" role="tab" aria-selected="false" aria-controls="phone-panel" data-phone-screen="trip" tabindex="-1">Trayecto</button>
+              <button class="phone-tab" type="button" id="phone-tab-sharing" role="tab" aria-selected="false" aria-controls="phone-panel" data-phone-screen="sharing" tabindex="-1">Compartir</button>
+            </div>
+          </div>
+          <aside class="recipient-preview" aria-label="Vista ilustrativa de la persona que recibe la ubicación">
+            <div class="recipient-heading"><span class="recipient-avatar" aria-hidden="true">P</span><span><strong>Vista para papá</strong><small>Familiar · ejemplo</small></span></div>
+            <div class="recipient-map" id="recipient-map">
+              <svg id="recipient-map-svg" viewBox="0 0 220 110" aria-label="Mapa simulado para el padre o familiar: zona segura del destino y punto que representa al estudiante">
+                <g id="recipient-map-layer">
+                  <path class="recipient-road" d="M-10 24 230 86M-10 78 210 8M45 120 130 -10M150 120 225 27M-10 49 220 49"/>
+                  <path class="recipient-route-line" id="recipient-route-line" d="M30 83C69 67 75 45 109 48S155 72 190 25"/>
+                  <ellipse class="safe-zone" cx="184" cy="30" rx="32" ry="21"/>
+                  <circle class="safe-zone-destination" cx="184" cy="30" r="3"/>
+                  <circle class="recipient-marker-halo" id="recipient-marker-halo" cx="84" cy="62" r="12"/>
+                  <circle class="recipient-marker" id="recipient-marker" cx="84" cy="62" r="5" tabindex="0" role="button" aria-label="Ubicación simulada de Mateo. Arrastra el punto o usa las flechas del teclado para moverlo."/>
+                  <rect class="recipient-marker-label-bg" id="recipient-marker-label-bg" x="94" y="52" width="43" height="16" rx="8"/>
+                  <text class="recipient-marker-label" id="recipient-marker-label" x="115" y="63" text-anchor="middle">Mateo</text>
+                  <rect class="safe-zone-label-bg" x="145" y="5" width="76" height="15" rx="7"/>
+                  <text class="safe-zone-label" x="183" y="15" text-anchor="middle">ZONA SEGURA</text>
+                </g>
+              </svg>
+              <span class="recipient-map-label">Mapa ilustrativo · Quito</span>
+              <div class="recipient-map-controls" aria-label="Controles del mapa">
+                <button class="map-control" id="map-zoom-in" type="button" aria-label="Acercar mapa">+</button>
+                <button class="map-control" id="map-zoom-out" type="button" aria-label="Alejar mapa">−</button>
+                <button class="map-control map-reset" id="map-reset" type="button" aria-label="Restablecer ubicación y zoom">Restablecer</button>
+              </div>
+            </div>
+            <div class="recipient-map-legend"><span><i class="safe-zone-key"></i>Zona segura</span><span><i class="location-key"></i>Estudiante</span></div>
+            <div class="recipient-status">
+              <span class="recipient-live-dot" aria-hidden="true"></span>
+              <span><strong id="recipient-status-title" aria-live="polite">Mateo está en camino</strong><small id="recipient-status-copy">Ubicación compartida · demo</small></span>
+            </div>
+            <p class="recipient-note">Arrastra el punto rojo o usa las flechas para moverlo. El área verde y la ubicación son simuladas.</p>
+          </aside>
+        </div>
+      </div>
+      <div class="hero-note"><span class="note-dot" aria-hidden="true"></span>Bus · Trolebús · Metro de Quito</div>
+    </section>
+
+    <section class="intro" id="como-funciona">
+      <div>
+        <span class="section-kicker">Para representantes de estudiantes fiscales</span>
+        <h2>Queremos entender lo que pasa entre cada transbordo.</h2>
+      </div>
+      <p>Estamos explorando cómo acompañan los representantes a estudiantes de Unidades Educativas o Instituciones Universitarias en Quito que viajan solos y combinan más de dos unidades de transporte.</p>
+    </section>
+
+    <section class="benefits" aria-label="Beneficios de TransporteSeguro">
+      <article class="benefit">
+        <span class="benefit-index">01 / RUTAS</span>
+        <h3>Más de dos unidades</h3>
+        <p>Queremos conocer cómo es el trayecto cuando un estudiante viaja solo combinando bus, Trolebús, Metro u otros medios.</p>
+      </article>
+      <article class="benefit">
+        <span class="benefit-index">02 / ACOMPAÑAMIENTO</span>
+        <h3>Llamadas durante el trabajo</h3>
+        <p>¿Interrumpes tu jornada para llamar o escribir y confirmar dónde está tu hijo o hija?</p>
+      </article>
+      <article class="benefit">
+        <span class="benefit-index">03 / LLEGADA</span>
+        <h3>Horarios por WhatsApp</h3>
+        <p>¿Ya tienen momentos pactados para enviarse un mensaje y confirmar que todo va bien?</p>
+      </article>
+    </section>
+
+    <section class="research-section" id="investigacion" aria-labelledby="research-title">
+      <div class="research-inner">
+        <div class="research-copy">
+          <span class="section-kicker">Hipótesis en validación</span>
+          <h2 id="research-title">¿Cuántas veces interrumpes tu jornada para saber dónde está?</h2>
+          <p>Creemos que representantes de estudiantes de Unidades Educativas o Instituciones Universitarias en Quito, cuyos hijos viajan solos en más de dos unidades, interrumpen su jornada laboral al menos tres veces por semana para llamar o escribirles porque no tienen otra forma de confirmar dónde están. También queremos comprobar si ya coordinan avisos por WhatsApp con horarios pactados.</p>
+        </div>
+        <div class="research-details" aria-label="Preguntas de la investigación">
+          <div class="research-detail"><span class="research-stat">3×</span><p>¿Llamas o escribes al menos tres veces por semana para confirmar dónde está?</p></div>
+          <div class="research-detail"><span class="research-stat">WhatsApp</span><p>¿Tienen una conversación y horarios pactados para avisarse durante el trayecto?</p></div>
+          <p class="research-note">Son preguntas que queremos comprobar con representantes; todavía no son resultados confirmados.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="route-section" aria-labelledby="route-title">
+      <div class="route-copy">
+        <span class="section-kicker">Una idea en desarrollo · Quito</span>
+        <h2 id="route-title">Acompañar el trayecto, incluso cuando hay transbordos.</h2>
+        <p>TransporteSeguro explora cómo reunir opciones de bus, Trolebús y Metro, junto con avisos de llegada para la familia. Para sugerir rutas reales se necesitarían datos actualizados de movilidad y seguridad de Quito.</p>
+      </div>
+      <div class="route-demo" aria-label="Vista ilustrativa de medios de transporte público en Quito">
+        <div class="route-heading"><strong>Opciones para tu recorrido</strong><span class="live-tag">QUITO</span></div>
+        <div class="mode-picker btn-group" role="group" aria-label="Selecciona un medio de transporte">
+          <button class="btn mode-button active" type="button" data-mode="bus" aria-pressed="true">Bus</button>
+          <button class="btn mode-button" type="button" data-mode="trolebus" aria-pressed="false">Trolebús</button>
+          <button class="btn mode-button" type="button" data-mode="metro" aria-pressed="false">Metro</button>
+        </div>
+        <p class="mode-feedback" id="mode-feedback" role="status" aria-live="polite">Bus urbano: una opción para recorrer Quito. Las rutas y frecuencias reales requerirían datos actualizados.</p>
+        <div class="route-line">
+          <div class="route-dots" aria-hidden="true"><span class="route-dot-start"></span><span class="route-stem"></span><span class="route-dot-end"></span></div>
+          <div>
+            <div class="stop"><div><strong>Punto de partida</strong><small>Quito · inicio del viaje</small></div><time>Origen</time></div>
+            <div class="stop"><div><strong>Centro de estudios</strong><small>Quito · destino del viaje</small></div><time>Destino</time></div>
+          </div>
+        </div>
+        <div class="route-foot">Ejemplo visual: no representa una ruta, frecuencia ni tiempo real.</div>
+      </div>
+    </section>
+
+    <section class="audience" id="familias">
+      <article>
+        <span class="section-kicker">Para estudiantes</span>
+        <h2>Más claridad entre un medio y otro.</h2>
+        <p>La idea es ayudar a organizar el viaje a clases y mantener a la familia al tanto de la llegada.</p>
+      </article>
+      <article>
+        <span class="section-kicker">Para madres, padres y representantes</span>
+        <h2>Menos llamadas para confirmar cada tramo.</h2>
+        <p>Estamos investigando cómo dar tranquilidad a quienes hoy coordinan avisos por llamada o WhatsApp mientras trabajan.</p>
+      </article>
+    </section>
+
+    <section class="signup" id="lista">
+      <div class="signup-copy">
+        <span class="section-kicker" style="color: var(--lime)">Investigación con representantes de Quito</span>
+        <h2>¿Tu hijo viaja solo a una Unidad Educativa o a su Universidad?</h2>
+        <p>Queremos escuchar cómo organizan los avisos durante el trayecto. Déjanos tu correo para expresar tu interés en conversar.</p>
+      </div>
+      <div>
+        <form class="signup-form" id="interest-form">
+          <label for="email" class="visually-hidden" style="position:absolute;clip:rect(0,0,0,0)">Tu correo electrónico</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="Tu correo electrónico" required>
+          <button class="button" type="submit">Quiero conversar</button>
+        </form>
+        <p class="form-note">Prototipo: este formulario no guarda ni envía datos. No compartas aquí conversaciones ni datos personales de estudiantes.</p>
+        <p class="form-result" id="form-result" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true">TS</span>TransporteSeguro</a>
+    <span>Una idea para llegar con más tranquilidad.</span>
+    <span>© 2026 TransporteSeguro</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

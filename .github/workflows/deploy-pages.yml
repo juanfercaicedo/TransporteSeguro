@@ -31,7 +31,7 @@ jobs:
           enablement: true
 
       - name: Prepare static site
-        run: mkdir -p _site && cp index.html _site/index.html
+        run: mkdir -p _site/css _site/js && cp src/html/index.html _site/index.html && cp src/css/styles.css _site/css/styles.css && cp src/js/main.js _site/js/main.js && sed -i 's#\.\./css/#css/#; s#\.\./js/#js/#' _site/index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
