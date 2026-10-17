@@ -1,0 +1,142 @@
+import { CONFIG } from "../config/config.js";
+import { GoogleMapsService } from "../services/GoogleMapsService.js";
+
+export class ChildModel {
+    constructor(mapsService = new GoogleMapsService()) {
+        this.mapsService = mapsService;
+        this.maps = null;
+        this.map = null;
+        this.renderer = null;
+        this.transitStopMarkers = [];
+        this.currentTrip = null;
+        this.childProfile = null;
+        this.mapInitializationError = null;
+    }
+
+    setChildProfile(profile) {
+        this.childProfile = profile;
+        if (this.currentTrip && profile) {
+            this.currentTrip = { ...this.currentTrip, childId: profile.id, childName: profile.name };
+        }
+    }
+
+    loadSavedTrip() {
+        let savedTrip;
+        try {
+            savedTrip = localStorage.getItem(CONFIG.TRIP_STORAGE_KEY);
+        } catch (error) {
+            throw new Error(`No se pudo leer el viaje guardado: ${error.message}`);
+        }
+        if (!savedTrip) return null;
+
+        try {
+            this.currentTrip = JSON.parse(savedTrip);
+        } catch (error) {
+            throw new Error(`El viaje guardado no es válido: ${error.message}`);
+        }
+        return this.currentTrip;
+    }
+
+    async initializeMap(element) {
+        try {
+            const mapData = await this.mapsService.createTransitMap(element);
+            this.maps = mapData.maps;
+            this.map = mapData.map;
+            this.renderer = mapData.renderer;
+        } catch (error) {
+            this.mapInitializationError = error;
+            throw error;
+        }
+    }
+
+    async getTransitRoutes(origin, destination) {
+        if (!this.maps) {
+            throw this.mapInitializationError || new Error("El mapa todavía se está inicializando.");
+        }
+
+        const response = await this.mapsService.getTransitRoutes(this.maps, origin, destination);
+        this.currentTrip = {
+            ...(this.childProfile ? { childId: this.childProfile.id, childName: this.childProfile.name } : {}),
+            origin,
+            destination,
+            status: "Ruta planificada",
+            selectedRoute: 0,
+            duration: response.routes[0].legs
+                .reduce((total, leg) => total + (leg.duration?.value || 0), 0),
+            updatedAt: new Date().toISOString()
+        };
+        return response;
+    }
+
+    selectRoute(response, routeIndex) {
+        const route = response.routes[routeIndex];
+        if (!route || !this.renderer) {
+            throw new Error("No se encontró la alternativa seleccionada.");
+        }
+
+        this.renderer.setDirections(response);
+        this.renderer.setRouteIndex(routeIndex);
+        this.transitStopMarkers = this.mapsService.renderTransitStopMarkers(
+            this.maps,
+            this.map,
+            route,
+            this.transitStopMarkers
+        );
+        const trip = {
+            ...this.currentTrip,
+            selectedRoute: routeIndex,
+            duration: route.legs.reduce((total, leg) => total + (leg.duration?.value || 0), 0),
+            updatedAt: new Date().toISOString()
+        };
+        this.saveTrip(trip);
+        this.currentTrip = trip;
+        return this.transitStopMarkers.length;
+    }
+
+    async shareCurrentLocation() {
+        if (!navigator.geolocation) {
+            throw new Error("Este navegador no permite compartir la ubicación.");
+        }
+
+        const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+                timeout: 12000,
+                maximumAge: 15000
+            });
+        });
+        const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            updatedAt: new Date().toISOString()
+        };
+
+        const trip = {
+            ...this.currentTrip,
+            ...(this.childProfile ? { childId: this.childProfile.id, childName: this.childProfile.name } : {}),
+            location,
+            status: "Ubicación compartida",
+            updatedAt: location.updatedAt
+        };
+        this.saveTrip(trip);
+        this.currentTrip = trip;
+        return location;
+    }
+
+    stopLocationSharing() {
+        if (this.currentTrip?.location) {
+            const { location, ...trip } = this.currentTrip;
+            const updatedTrip = { ...trip, status: "Compartición pausada", updatedAt: new Date().toISOString() };
+            this.saveTrip(updatedTrip);
+            this.currentTrip = updatedTrip;
+        }
+    }
+
+    saveTrip(trip = this.currentTrip) {
+        try {
+            localStorage.setItem(CONFIG.TRIP_STORAGE_KEY, JSON.stringify(trip));
+        } catch (error) {
+            throw new Error(`No se pudo actualizar la vista familiar: ${error.message}`);
+        }
+    }
+}

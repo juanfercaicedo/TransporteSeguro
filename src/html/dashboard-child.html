@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf4f2">
+  <title>Mi recorrido | TransporteSeguro</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="phone-preview-page">
+  <div class="phone-device" role="region" aria-label="Vista previa de TransporteSeguro en un teléfono">
+    <div class="phone-screen">
+      <div class="phone-statusbar" aria-hidden="true">
+        <span>9:41</span>
+        <span class="phone-island"></span>
+        <span class="phone-status-icons"><span class="phone-signal">●●●</span><span>Wi-Fi</span><span class="phone-battery">100</span></span>
+      </div>
+      <header class="app-header">
+        <a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true">TS</span>TransporteSeguro</a>
+        <a class="back-link" href="app-index.html">Cambiar de vista</a>
+      </header>
+      <main class="dashboard-container phone-app-content" id="child-dashboard">
+        <div class="dashboard-heading">
+          <div><p class="section-kicker">Vista estudiante</p><h1>Organiza tu recorrido</h1><p>Indica desde dónde sales y a dónde vas para encontrar una parada conveniente y comparar rutas de transporte público.</p><p class="active-child-label">Perfil activo: <strong id="active-child-name">Estudiante</strong></p></div>
+          <button id="open-child-settings" class="secondary-button settings-trigger" type="button">Ajustes</button>
+        </div>
+        <dialog id="child-settings" class="settings-dialog" aria-labelledby="child-settings-heading">
+          <div class="settings-dialog-header"><div><p class="section-kicker">Personaliza tu perfil</p><h2 id="child-settings-heading">Ajustes</h2></div><button id="close-child-settings" class="dialog-close" type="button" aria-label="Cerrar ajustes">×</button></div>
+          <label class="settings-field" for="active-child-profile"><span>Perfil de estudiante en este dispositivo</span><select id="active-child-profile"></select></label>
+          <button id="save-active-child-profile" class="primary-button" type="button">Usar este perfil</button>
+          <div class="settings-divider"></div>
+          <form id="add-child-profile-form" class="settings-add-form">
+            <label class="settings-field" for="new-child-name"><span>Añadir perfil de hijo/a</span><input id="new-child-name" type="text" maxlength="50" placeholder="Nombre del estudiante" required></label>
+            <button class="secondary-button" type="submit">Añadir perfil</button>
+          </form>
+          <p id="child-settings-status" class="settings-status" role="status" aria-live="polite"></p>
+          <p class="settings-note">Los perfiles se guardan solo en este navegador. Para compartirlos entre dispositivos se necesita una cuenta y un servidor.</p>
+        </dialog>
+        <section class="dashboard-card" aria-labelledby="route-heading">
+          <h2 id="route-heading">¿Desde dónde sales y a dónde vas?</h2>
+          <div class="route-controls">
+            <label class="field"><span>Mi ubicación o punto de partida</span><input type="text" id="origen" placeholder="Dirección, barrio o lugar en Quito" autocomplete="street-address" required></label>
+            <label class="field"><span>Destino</span><input type="text" id="destino" placeholder="Dirección, barrio o lugar en Quito" autocomplete="street-address" required></label>
+            <button id="btnCalcular" class="primary-button" type="button">Buscar parada y ruta</button>
+          </div>
+          <p class="privacy-note">Usa una dirección, barrio o lugar conocido. La ruta considera las paradas de subida y bajada y la caminata necesaria.</p>
+          <p id="child-status" class="dashboard-status" role="status" aria-live="polite">Google Maps debe estar configurado para calcular rutas dentro de la app. Sin esa configuración, puedes abrir la búsqueda en Google Maps.</p>
+          <a id="open-in-google-maps" class="maps-link" target="_blank" rel="noopener noreferrer" hidden>Abrir la ruta en Google Maps <span aria-hidden="true">↗</span></a>
+        </section>
+        <section class="dashboard-grid">
+          <section class="dashboard-card" aria-labelledby="map-heading">
+            <h2 id="map-heading">Mapa de recorrido</h2>
+            <div id="map" class="route-map" role="region" aria-label="Mapa de la ruta elegida">
+              <p class="map-fallback">Cargando mapa de Quito…</p>
+            </div>
+            <p id="map-stop-legend" class="map-stop-legend" hidden><span aria-hidden="true"></span> Paradas del recorrido</p>
+            <button id="btnShareLocation" class="secondary-button" type="button">Compartir mi ubicación actual</button>
+            <button id="btnStopSharing" class="secondary-button" type="button" disabled>Dejar de compartir ubicación</button>
+            <p class="privacy-note">La ubicación se solicita solo cuando pulsas compartir. Se guarda únicamente en este navegador; no se envía a un servidor.</p>
+          </section>
+          <section class="dashboard-card" aria-labelledby="alternatives-heading">
+            <h2 id="alternatives-heading">Alternativas</h2>
+            <div id="route-options" class="route-options" aria-label="Rutas disponibles"></div>
+            <div id="instructions" class="directions-panel" aria-label="Pasos del recorrido"></div>
+          </section>
+        </section>
+      </main>
+      <div class="phone-home-indicator" aria-hidden="true"></div>
+    </div>
+  </div>
+  <script type="module" src="../controllers/ChildController.js"></script>
+</body>
+</html>

@@ -31,7 +31,24 @@ jobs:
           enablement: true
 
       - name: Prepare static site
-        run: mkdir -p _site/css _site/js && cp src/html/index.html _site/index.html && cp src/css/styles.css _site/css/styles.css && cp src/js/main.js _site/js/main.js && sed -i 's#\.\./css/#css/#; s#\.\./js/#js/#' _site/index.html
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        run: |
+          mkdir -p _site/src/{config,controllers,css,html,js,models,services,views}
+          cp index.html _site/index.html
+          cp src/css/styles.css _site/src/css/
+          cp src/js/main.js _site/src/js/
+          cp src/config/*.js _site/src/config/
+          cp src/controllers/*.js _site/src/controllers/
+          cp src/models/*.js _site/src/models/
+          cp src/services/*.js _site/src/services/
+          cp src/views/*.js _site/src/views/
+          cp src/html/*.html _site/src/html/
+          if [ -n "$GOOGLE_MAPS_API_KEY" ]; then
+            node -e 'const fs = require("fs"); const path = "_site/src/config/config.js"; const source = fs.readFileSync(path, "utf8"); const key = JSON.stringify(process.env.GOOGLE_MAPS_API_KEY); fs.writeFileSync(path, source.replace("GOOGLE_MAPS_API_KEY: \"\"", `GOOGLE_MAPS_API_KEY: ${key}`));'
+          else
+            echo "::warning::GOOGLE_MAPS_API_KEY is not configured; the student dashboard will provide a Google Maps directions link instead of an embedded map."
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

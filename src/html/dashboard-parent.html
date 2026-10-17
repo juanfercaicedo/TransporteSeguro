@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf4f2">
+  <title>Vista familiar | TransporteSeguro</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="phone-preview-page">
+  <div class="phone-device" role="region" aria-label="Vista familiar de TransporteSeguro en un teléfono">
+    <div class="phone-screen">
+      <div class="phone-statusbar" aria-hidden="true">
+        <span>9:41</span>
+        <span class="phone-island"></span>
+        <span class="phone-status-icons"><span class="phone-signal">●●●</span><span>Wi-Fi</span><span class="phone-battery">100</span></span>
+      </div>
+      <header class="app-header">
+        <a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true">TS</span>TransporteSeguro</a>
+        <a class="back-link" href="app-index.html">Cambiar de vista</a>
+      </header>
+      <main class="dashboard-container phone-app-content parent-app-content" id="parent-dashboard">
+        <div class="dashboard-heading">
+          <div><p class="section-kicker">Vista familiar</p><h1>Acompaña su viaje</h1><p>Consulta el recorrido y la última ubicación compartida.</p></div>
+          <div class="parent-heading-actions"><button id="refresh-trip" class="secondary-button" type="button">Actualizar</button><button id="open-parent-settings" class="secondary-button settings-trigger" type="button">Ajustes</button></div>
+        </div>
+        <section class="dashboard-card family-profile-card" aria-labelledby="family-profile-heading">
+          <div class="family-profile-top"><div class="child-profile"><span class="child-avatar" aria-hidden="true">F</span><div><strong id="family-profile-heading">Mi familia</strong><span>Perfiles de estudiantes</span></div></div><p class="child-count"><strong id="parent-child-count">0</strong><span id="parent-child-count-label">hijos en la app</span></p></div>
+          <div id="parent-child-list" class="parent-child-list"></div>
+        </section>
+        <p id="parent-status" class="dashboard-status" role="status" aria-live="polite" hidden></p>
+        <section id="parent-empty" class="dashboard-card empty-state">
+          <div class="child-profile">
+            <span class="child-avatar" aria-hidden="true">H</span>
+            <div><strong>Mi hijo/a</strong><span>Sin recorrido compartido</span></div>
+          </div>
+          <h2>Aún no hay un recorrido</h2>
+          <p>Cuando el estudiante planifique un viaje o comparta su ubicación desde la otra pestaña, aparecerá aquí.</p>
+          <a class="primary-button" href="dashboard-child.html">Abrir vista estudiante</a>
+        </section>
+        <section id="parent-trip" class="dashboard-card parent-trip" aria-labelledby="trip-heading" hidden>
+          <div class="child-profile">
+            <span class="child-avatar" aria-hidden="true">H</span>
+            <div><strong id="parent-child-name">Mi hijo/a</strong><span id="parent-child-presence">Viaje actualizado</span></div>
+            <span id="parent-connection-badge" class="connected-badge">Actualizado</span>
+          </div>
+          <div class="trip-title"><div><p class="section-kicker">Estado del recorrido</p><h2 id="trip-heading">Viaje del estudiante</h2></div></div>
+          <p id="parent-trip-status" class="trip-status">Ruta planificada</p>
+          <section class="parent-location-card" aria-labelledby="parent-location-heading">
+            <div class="location-card-heading"><span class="location-pin" aria-hidden="true"></span><div><h3 id="parent-location-heading">Ubicación de tu hijo/a</h3><p id="parent-location">Aún no ha compartido su ubicación.</p></div></div>
+            <div id="parent-location-map" class="parent-location-map" hidden></div>
+            <a id="parent-location-link" class="maps-link" target="_blank" rel="noopener noreferrer" hidden>Ver ubicación en Google Maps <span aria-hidden="true">↗</span></a>
+          </section>
+          <dl class="trip-details">
+            <div><dt>Origen</dt><dd id="parent-origin"></dd></div>
+            <div><dt>Destino</dt><dd id="parent-destination"></dd></div>
+            <div><dt>Duración aproximada</dt><dd id="parent-duration"></dd></div>
+            <div><dt>Última actualización</dt><dd id="parent-updated"></dd></div>
+          </dl>
+        </section>
+        <p class="privacy-note">Este prototipo comparte datos solo entre pestañas del mismo navegador y sitio. No es seguimiento en tiempo real ni comparte ubicación entre dispositivos.</p>
+        <dialog id="parent-settings" class="settings-dialog" aria-labelledby="parent-settings-heading">
+          <div class="settings-dialog-header"><div><p class="section-kicker">Administra tu familia</p><h2 id="parent-settings-heading">Ajustes</h2></div><button id="close-parent-settings" class="dialog-close" type="button" aria-label="Cerrar ajustes">×</button></div>
+          <p class="settings-count"><strong id="parent-settings-child-count">0</strong> perfiles de hijos/as</p>
+          <div id="parent-settings-child-list" class="settings-child-list"></div>
+          <form id="add-parent-child-form" class="settings-add-form">
+            <label class="settings-field" for="parent-new-child-name"><span>Añadir hijo/a</span><input id="parent-new-child-name" type="text" maxlength="50" placeholder="Nombre del estudiante" required></label>
+            <button class="primary-button" type="submit">Añadir perfil</button>
+          </form>
+          <p id="parent-settings-status" class="settings-status" role="status" aria-live="polite"></p>
+          <p class="settings-note">La lista se guarda solo en este navegador. No representa cuentas registradas ni se sincroniza con otros dispositivos.</p>
+        </dialog>
+      </main>
+      <div class="phone-home-indicator" aria-hidden="true"></div>
+    </div>
+  </div>
+  <script type="module" src="../controllers/ParentController.js"></script>
+</body>
+</html>
