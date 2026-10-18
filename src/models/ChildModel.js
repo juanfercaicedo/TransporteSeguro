@@ -86,10 +86,9 @@ export class ChildModel {
         this.demoRouteLayers = [];
 
         const line = leaflet.polyline(route.coordinates, {
-            color: "#1c6fd8",
-            weight: 4,
-            opacity: 0.85,
-            dashArray: "2 8",
+            color: "#e03131",
+            weight: 5,
+            opacity: 0.9,
             lineCap: "round"
         }).addTo(map);
         this.demoRouteLayers.push(line);
@@ -99,9 +98,9 @@ export class ChildModel {
             const isDropOff = index === route.dropOff.index;
             const marker = leaflet.circleMarker([stop.latitude, stop.longitude], {
                 radius: isBoarding || isDropOff ? 8 : 6,
-                fillColor: isBoarding ? "#1b9b5a" : isDropOff ? "#d9534f" : "#1c6fd8",
+                fillColor: isBoarding ? "#1b9b5a" : isDropOff ? "#1f2937" : "#ffffff",
                 fillOpacity: 1,
-                color: "#ffffff",
+                color: isBoarding || isDropOff ? "#ffffff" : "#e03131",
                 weight: 2
             }).bindPopup(stop.name).addTo(map);
             this.demoRouteLayers.push(marker);

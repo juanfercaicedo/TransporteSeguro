@@ -4,6 +4,7 @@ import { SafeZoneModel } from "../models/SafeZoneModel.js";
 import { PairingModel } from "../models/PairingModel.js";
 import { RouteSimulationModel } from "../models/RouteSimulationModel.js";
 import { ensureDemoData } from "../models/DemoSeed.js";
+import { CONFIG } from "../config/config.js";
 import { ParentView } from "../views/ParentView.js";
 
 function getErrorMessage(error) {
@@ -32,7 +33,8 @@ export class ParentController {
         this.view.bindRefresh(this.refresh.bind(this));
         this.view.bindSettings({
             onAddChild: this.handleAddChild.bind(this),
-            onRemoveChild: this.handleRemoveChild.bind(this)
+            onRemoveChild: this.handleRemoveChild.bind(this),
+            onResetDemo: this.handleResetDemo.bind(this)
         });
         this.view.bindSafeZone({
             onZoneChange: this.handleZoneChange.bind(this),
@@ -207,6 +209,22 @@ export class ParentController {
             this.profilesModel.removeProfile(profileId);
             this.refresh();
             this.view.showSettingsStatus(`Se quitó el perfil de ${profile.name}.`);
+        } catch (error) {
+            this.view.showSettingsStatus(getErrorMessage(error), true);
+        }
+    }
+
+    handleResetDemo() {
+        if (!window.confirm("¿Restablecer los datos de demostración (Mateo, ruta #10 y su ubicación)? Se borrará el viaje guardado en este navegador.")) return;
+        try {
+            this.simulationModel.stop();
+            localStorage.removeItem(CONFIG.TRIP_STORAGE_KEY);
+            localStorage.removeItem(CONFIG.DEMO_SEED_KEY);
+            ensureDemoData();
+            this.view.setSimulationRunning(false, CONFIG.DEMO_BUS_ROUTE.number);
+            this.view.setSimulationProgress("");
+            this.refresh();
+            this.view.showSettingsStatus("Datos de demostración restablecidos: Mateo está en la ruta #10.");
         } catch (error) {
             this.view.showSettingsStatus(getErrorMessage(error), true);
         }

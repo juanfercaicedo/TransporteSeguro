@@ -54,7 +54,7 @@ export class ParentView {
         this.onZoneChange = null;
     }
 
-    bindSettings({ onAddChild, onRemoveChild }) {
+    bindSettings({ onAddChild, onRemoveChild, onResetDemo }) {
         this.document.getElementById("open-parent-settings").addEventListener("click", () => {
             this.settingsStatus.textContent = "";
             this.settingsDialog.showModal();
@@ -67,6 +67,7 @@ export class ParentView {
             const input = this.document.getElementById("parent-new-child-name");
             onAddChild(input.value.trim());
         });
+        this.document.getElementById("parent-reset-demo").addEventListener("click", onResetDemo);
         this.onRemoveChild = onRemoveChild;
     }
 
@@ -373,10 +374,9 @@ export class ParentView {
         if (!route?.coordinates?.length) return;
 
         this.routeLine = this.leaflet.polyline(route.coordinates, {
-            color: "#1c6fd8",
-            weight: 4,
-            opacity: 0.8,
-            dashArray: "1 8",
+            color: "#e03131",
+            weight: 5,
+            opacity: 0.9,
             lineCap: "round"
         }).addTo(this.zoneMap);
 
