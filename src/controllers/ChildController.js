@@ -1,5 +1,7 @@
 import { ChildModel } from "../models/ChildModel.js";
 import { ChildProfilesModel } from "../models/ChildProfilesModel.js";
+import { PairingModel } from "../models/PairingModel.js";
+import { ensureDemoData } from "../models/DemoSeed.js";
 import { ChildView } from "../views/ChildView.js";
 
 function getErrorMessage(error) {
@@ -7,10 +9,13 @@ function getErrorMessage(error) {
 }
 
 export class ChildController {
-    constructor(model = new ChildModel(), view = new ChildView(), profilesModel = new ChildProfilesModel()) {
+    constructor(model = new ChildModel(), view = new ChildView(), profilesModel = new ChildProfilesModel(), pairingModel = new PairingModel()) {
+        ensureDemoData();
         this.model = model;
         this.view = view;
         this.profilesModel = profilesModel;
+        this.pairingModel = pairingModel;
+        this.demoRoute = this.model.getDemoRoute();
         this.currentRoutes = null;
         this.view.bindCalculateRoute(this.handleCalculateRoute.bind(this));
         this.view.bindShareLocation(this.handleShareLocation.bind(this));
@@ -30,6 +35,8 @@ export class ChildController {
     async initialize() {
         let savedTripError = "";
         try {
+            this.view.renderDemoRoute(this.demoRoute);
+            this.view.renderPairingCode(this.pairingModel.getCode());
             const profiles = this.profilesModel.getProfiles();
             let activeProfileId = this.profilesModel.getActiveProfileId();
             let activeProfile = profiles.find((profile) => profile.id === activeProfileId) || null;
@@ -67,6 +74,13 @@ export class ChildController {
                 );
             } catch (fallbackError) {
                 fallbackMapWarning = `No se pudieron mostrar las paradas en el mapa: ${getErrorMessage(fallbackError)}`;
+            }
+            if (this.demoRoute) {
+                try {
+                    this.model.displayDemoRoute(this.demoRoute);
+                } catch {
+                    // la línea de la ruta en el mapa es decorativa
+                }
             }
             this.view.showStatus([
                 savedTripError,
@@ -147,7 +161,15 @@ export class ChildController {
                 this.view.showStatus("Alternativas ordenadas por duración; la más rápida está recomendada.");
             }
         } catch (error) {
-            this.view.showStatus(getErrorMessage(error), true);
+            if (this.demoRoute) {
+                this.view.renderDemoRoute(this.demoRoute);
+                this.view.showStatus(
+                    `Google Maps no está configurado para calcular rutas dentro de la app; ` +
+                    `se muestra la ruta ficticia #${this.demoRoute.number} con paradas reales de Quito (demo).`
+                );
+            } else {
+                this.view.showStatus(getErrorMessage(error), true);
+            }
         } finally {
             this.view.setLoading(false);
         }

@@ -48,8 +48,21 @@
           <p id="parent-trip-status" class="trip-status">Ruta planificada</p>
           <section class="parent-location-card" aria-labelledby="parent-location-heading">
             <div class="location-card-heading"><span class="location-pin" aria-hidden="true"></span><div><h3 id="parent-location-heading">Ubicación de tu hijo/a</h3><p id="parent-location">Aún no ha compartido su ubicación.</p></div></div>
-            <div id="parent-location-map" class="parent-location-map" hidden></div>
+            <p id="parent-zone-status" class="zone-status is-idle" role="status" aria-live="polite"></p>
+            <div id="parent-location-map" class="parent-location-map" role="region" aria-label="Mapa con la última ubicación, la ruta de bus y la zona segura" hidden></div>
+            <p id="parent-route-legend" class="route-legend" hidden></p>
+            <div class="zone-controls">
+              <label class="zone-radius-field" for="parent-zone-radius"><span>Radio de la zona segura: <strong id="parent-zone-radius-value">300 m</strong></span><input id="parent-zone-radius" type="range" min="50" max="2000" step="10" value="300"></label>
+              <button id="parent-zone-reset" class="secondary-button" type="button">Restablecer zona segura</button>
+              <button id="parent-sim-toggle" class="secondary-button" type="button" hidden>Simular viaje en la ruta</button>
+              <p id="parent-sim-progress" class="sim-progress" role="status" aria-live="polite" hidden></p>
+              <p class="privacy-note">Arrastra el punto central para mover la zona segura y el manejador del borde para agrandarla o reducirla. También puedes usar el control deslizante.</p>
+            </div>
             <a id="parent-location-link" class="maps-link" target="_blank" rel="noopener noreferrer" hidden>Ver ubicación en Google Maps <span aria-hidden="true">↗</span></a>
+          </section>
+          <section id="parent-route-details" class="parent-route-card" aria-labelledby="parent-route-heading" hidden>
+            <div class="location-card-heading"><span class="route-bus-icon" aria-hidden="true"></span><div><h3 id="parent-route-heading">Ruta del bus</h3><p id="parent-route-summary"></p></div></div>
+            <p id="parent-route-stops-text" class="route-stops-text"></p>
           </section>
           <dl class="trip-details">
             <div><dt>Origen</dt><dd id="parent-origin"></dd></div>
@@ -58,7 +71,7 @@
             <div><dt>Última actualización</dt><dd id="parent-updated"></dd></div>
           </dl>
         </section>
-        <p class="privacy-note">Este prototipo comparte datos solo entre pestañas del mismo navegador y sitio. No es seguimiento en tiempo real ni comparte ubicación entre dispositivos.</p>
+        <p class="privacy-note">Prototipo de demostración con datos ficticios (estudiante de prueba: Mateo). La ubicación compartida, la zona segura y el vínculo familiar se simulan en este navegador; no se envía nada a un servidor ni hay seguimiento en tiempo real entre dispositivos.</p>
         <dialog id="parent-settings" class="settings-dialog" aria-labelledby="parent-settings-heading">
           <div class="settings-dialog-header"><div><p class="section-kicker">Administra tu familia</p><h2 id="parent-settings-heading">Ajustes</h2></div><button id="close-parent-settings" class="dialog-close" type="button" aria-label="Cerrar ajustes">×</button></div>
           <p class="settings-count"><strong id="parent-settings-child-count">0</strong> perfiles de hijos/as</p>
@@ -68,6 +81,17 @@
             <button class="primary-button" type="submit">Añadir perfil</button>
           </form>
           <p id="parent-settings-status" class="settings-status" role="status" aria-live="polite"></p>
+          <div class="settings-divider"></div>
+          <section class="pairing-section" aria-labelledby="parent-pairing-heading">
+            <h3 id="parent-pairing-heading">Vincular con mi hijo/a</h3>
+            <p class="settings-note">Introduce el código de emparejamiento que aparece en la vista estudiante. En este prototipo la sincronización se simula en el mismo navegador.</p>
+            <form id="parent-pairing-form" class="settings-add-form">
+              <label class="settings-field" for="parent-pairing-code"><span>Código de emparejamiento</span><input id="parent-pairing-code" type="text" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="6 dígitos" required></label>
+              <button class="primary-button" type="submit">Vincular</button>
+            </form>
+            <p id="parent-pairing-status" class="settings-status" role="status" aria-live="polite"></p>
+            <button id="parent-unpair" class="secondary-button" type="button" hidden>Desvincular</button>
+          </section>
           <p class="settings-note">La lista se guarda solo en este navegador. No representa cuentas registradas ni se sincroniza con otros dispositivos.</p>
         </dialog>
       </main>

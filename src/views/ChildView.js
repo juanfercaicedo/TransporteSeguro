@@ -19,7 +19,12 @@ export class ChildView {
         this.profileSelect = this.document.getElementById("active-child-profile");
         this.profileName = this.document.getElementById("active-child-name");
         this.settingsStatus = this.document.getElementById("child-settings-status");
+        this.pairingCode = this.document.getElementById("child-pairing-code");
         this.currentResponse = null;
+    }
+
+    renderPairingCode(code) {
+        if (this.pairingCode) this.pairingCode.textContent = code;
     }
 
     bindSettings({ onSelectProfile, onAddProfile }) {
@@ -127,6 +132,62 @@ export class ChildView {
         note.className = "map-fallback-note";
         note.textContent = message;
         this.mapElement.replaceChildren(map, note);
+    }
+
+    renderDemoRoute(route) {
+        this.currentResponse = null;
+        this.routesPanel.replaceChildren();
+        const button = this.document.createElement("button");
+        button.className = "route-option";
+        button.type = "button";
+        button.setAttribute("aria-pressed", "true");
+        const title = this.document.createElement("strong");
+        title.textContent = `Ruta #${route.number} · ${route.name} (demo ficticio)`;
+        const summary = this.document.createElement("span");
+        summary.textContent = `${route.stops.length} paradas · baja en ${route.dropOff.name}`;
+        const boarding = this.document.createElement("span");
+        boarding.textContent = `Sube en: ${route.boarding.name}`;
+        button.append(title, summary, boarding);
+        button.addEventListener("click", () => this.showDemoRouteDetails(route));
+        this.routesPanel.append(button);
+        this.showDemoRouteDetails(route);
+    }
+
+    showDemoRouteDetails(route) {
+        this.instructionsPanel.hidden = false;
+
+        const stopSummary = this.document.createElement("section");
+        stopSummary.className = "route-stop-summary";
+
+        const boarding = this.document.createElement("p");
+        const boardingLabel = this.document.createElement("strong");
+        boardingLabel.textContent = "Parada sugerida para subir";
+        const boardingName = this.document.createElement("span");
+        boardingName.textContent = `${route.boarding.name} (parada ${route.boarding.index + 1} de ${route.stops.length})`;
+        boarding.append(boardingLabel, boardingName);
+
+        const dropOff = this.document.createElement("p");
+        const dropOffLabel = this.document.createElement("strong");
+        dropOffLabel.textContent = "Parada para bajar";
+        const dropOffName = this.document.createElement("span");
+        dropOffName.textContent = `${route.dropOff.name} (parada ${route.dropOff.index + 1} de ${route.stops.length})`;
+        dropOff.append(dropOffLabel, dropOffName);
+
+        stopSummary.append(boarding, dropOff);
+        this.stopSummaryPanel.replaceChildren(stopSummary);
+
+        const stopsPanel = this.document.createElement("div");
+        stopsPanel.className = "demo-route-stops";
+        const stopsLabel = this.document.createElement("strong");
+        stopsLabel.textContent = "Paradas de la ruta";
+        const stopsText = this.document.createElement("span");
+        stopsText.textContent = route.stops
+            .map((stop, index) => `${index + 1}. ${stop.name}`)
+            .join(" → ");
+        const demoNote = this.document.createElement("small");
+        demoNote.textContent = "Ruta ficticia para el prototipo; los nombres y coordenadas de las paradas provienen de OpenStreetMap.";
+        stopsPanel.append(stopsLabel, stopsText, demoNote);
+        this.directionsPanel.replaceChildren(stopsPanel);
     }
 
     renderRoutes(response, onSelectRoute) {

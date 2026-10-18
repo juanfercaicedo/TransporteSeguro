@@ -1,5 +1,6 @@
 import { CONFIG } from "../config/config.js";
 import { GoogleMapsService } from "../services/GoogleMapsService.js";
+import { buildDemoRoute } from "./DemoSeed.js";
 
 export class ChildModel {
     constructor(mapsService = new GoogleMapsService()) {
@@ -12,6 +13,8 @@ export class ChildModel {
         this.currentTrip = null;
         this.childProfile = null;
         this.mapInitializationError = null;
+        this.fallbackMap = null;
+        this.demoRouteLayers = [];
     }
 
     setChildProfile(profile) {
@@ -71,7 +74,45 @@ export class ChildModel {
     }
 
     async initializeFallbackMap(element, busStops) {
-        return this.mapsService.createFallbackMap(element, busStops);
+        this.fallbackMap = await this.mapsService.createFallbackMap(element, busStops);
+        return this.fallbackMap;
+    }
+
+    displayDemoRoute(route) {
+        if (!this.fallbackMap || !route?.coordinates?.length) return false;
+        const { map, leaflet } = this.fallbackMap;
+
+        this.demoRouteLayers.forEach((layer) => layer.remove());
+        this.demoRouteLayers = [];
+
+        const line = leaflet.polyline(route.coordinates, {
+            color: "#1c6fd8",
+            weight: 4,
+            opacity: 0.85,
+            dashArray: "2 8",
+            lineCap: "round"
+        }).addTo(map);
+        this.demoRouteLayers.push(line);
+
+        route.stops.forEach((stop, index) => {
+            const isBoarding = index === route.boarding.index;
+            const isDropOff = index === route.dropOff.index;
+            const marker = leaflet.circleMarker([stop.latitude, stop.longitude], {
+                radius: isBoarding || isDropOff ? 8 : 6,
+                fillColor: isBoarding ? "#1b9b5a" : isDropOff ? "#d9534f" : "#1c6fd8",
+                fillOpacity: 1,
+                color: "#ffffff",
+                weight: 2
+            }).bindPopup(stop.name).addTo(map);
+            this.demoRouteLayers.push(marker);
+        });
+
+        map.fitBounds(line.getBounds().pad(0.15));
+        return true;
+    }
+
+    getDemoRoute() {
+        return buildDemoRoute();
     }
 
     async getTransitRoutes(origin, destination) {
