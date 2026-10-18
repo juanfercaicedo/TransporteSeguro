@@ -2,6 +2,41 @@ import { CONFIG } from "../config/config.js";
 
 let mapsScriptPromise;
 let mapsCallbackId = 0;
+let leafletPromise;
+
+function loadLeaflet() {
+    if (window.L) return Promise.resolve(window.L);
+    if (leafletPromise) return leafletPromise;
+
+    const version = "1.9.4";
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = `https://unpkg.com/leaflet@${version}/dist/leaflet.css`;
+
+    const script = document.createElement("script");
+    script.src = `https://unpkg.com/leaflet@${version}/dist/leaflet.js`;
+    script.async = true;
+
+    leafletPromise = Promise.all([
+        new Promise((resolve, reject) => {
+            stylesheet.onload = resolve;
+            stylesheet.onerror = () => reject(new Error("No se pudieron cargar los estilos del mapa alternativo."));
+        }),
+        new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = () => reject(new Error("No se pudo cargar la biblioteca del mapa alternativo."));
+        })
+    ]).then(() => {
+        if (!window.L) throw new Error("La biblioteca del mapa alternativo no se inicializó.");
+        return window.L;
+    }).catch((error) => {
+        leafletPromise = null;
+        throw error;
+    });
+
+    document.head.append(stylesheet, script);
+    return leafletPromise;
+}
 
 function loadMapsScript() {
     if (window.google?.maps) {
@@ -69,7 +104,7 @@ export class GoogleMapsService {
         return { maps, map, renderer };
     }
 
-    async loadBusStops(maps, map) {
+    async fetchBusStops() {
         const busStopsUrl = new URL("../json/busStop.json", import.meta.url);
         const response = await fetch(busStopsUrl);
         if (!response.ok) {
@@ -91,6 +126,10 @@ export class GoogleMapsService {
             throw new Error("El archivo busStop.json contiene coordenadas de paradas no válidas.");
         }
 
+        return busStops;
+    }
+
+    addBusStopsToMap(maps, map, busStops) {
         map.data.setStyle({
             clickable: true,
             icon: {
@@ -99,17 +138,11 @@ export class GoogleMapsService {
                 fillOpacity: 0.9,
                 strokeColor: "#ffffff",
                 strokeWeight: 1,
-                scale: 4
+                scale: 5
             },
             title: "Parada de bus"
         });
         map.data.addGeoJson(busStops);
-        const stopBounds = new maps.LatLngBounds();
-        busStops.features.forEach((feature) => {
-            const [longitude, latitude] = feature.geometry.coordinates;
-            stopBounds.extend({ lat: latitude, lng: longitude });
-        });
-        map.fitBounds(stopBounds, 24);
 
         const infoWindow = new maps.InfoWindow();
         map.data.addListener("click", (event) => {
@@ -130,6 +163,41 @@ export class GoogleMapsService {
         });
 
         return busStops.features.length;
+    }
+
+    async createFallbackMap(element, busStops) {
+        const leaflet = await loadLeaflet();
+        const container = element.querySelector(".map-fallback-leaflet");
+        if (!container) throw new Error("No se encontró el contenedor del mapa alternativo.");
+
+        const map = leaflet.map(container, { preferCanvas: true })
+            .setView([CONFIG.DEFAULT_LOCATION.lat, CONFIG.DEFAULT_LOCATION.lng], 13);
+        leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        }).addTo(map);
+        leaflet.geoJSON(busStops, {
+            pointToLayer: (_feature, location) => leaflet.circleMarker(location, {
+                radius: 4,
+                fillColor: "#1b9b5a",
+                fillOpacity: 0.9,
+                color: "#ffffff",
+                weight: 1
+            }),
+            onEachFeature: (feature, layer) => {
+                const content = document.createElement("div");
+                const heading = document.createElement("strong");
+                heading.textContent = feature.properties?.name || "Parada sin nombre";
+                content.append(heading);
+                if (feature.properties?.public_transport) {
+                    const detail = document.createElement("p");
+                    detail.textContent = feature.properties.public_transport;
+                    content.append(detail);
+                }
+                layer.bindPopup(content);
+            }
+        }).addTo(map);
+        window.requestAnimationFrame(() => map.invalidateSize());
     }
 
     createAddressAutocomplete(maps, input) {

@@ -43,12 +43,37 @@ export class ChildController {
         } catch (error) {
             savedTripError = getErrorMessage(error);
         }
+
+        let busStops = null;
+        let busStopsWarning = "";
+        try {
+            busStops = await this.model.loadBusStops();
+            this.view.showBusStopCount(busStops.features.length);
+        } catch (error) {
+            busStopsWarning = `No se cargó el catálogo de paradas: ${getErrorMessage(error)}`;
+            this.view.showBusStopError();
+        }
+
         try {
             await this.model.initializeMap(this.view.mapElement, this.view.directionsPanel);
         } catch (error) {
             const mapError = `${getErrorMessage(error)} Al buscar, podrás abrir el recorrido en Google Maps.`;
             this.view.showMapFallback("Mapa de Quito · OpenStreetMap. El cálculo de rutas dentro de la app requiere configurar Google Maps.");
-            this.view.showStatus([savedTripError, mapError].filter(Boolean).join(" "), true);
+            let fallbackMapWarning = "";
+            try {
+                await this.model.initializeFallbackMap(
+                    this.view.mapElement,
+                    busStops || { type: "FeatureCollection", features: [] }
+                );
+            } catch (fallbackError) {
+                fallbackMapWarning = `No se pudieron mostrar las paradas en el mapa: ${getErrorMessage(fallbackError)}`;
+            }
+            this.view.showStatus([
+                savedTripError,
+                mapError,
+                busStopsWarning,
+                fallbackMapWarning
+            ].filter(Boolean).join(" "), true);
             return;
         }
 
@@ -59,12 +84,12 @@ export class ChildController {
         } catch (error) {
             autocompleteWarning = `No se pudieron activar las sugerencias: ${getErrorMessage(error)} Puedes escribir las direcciones manualmente.`;
         }
-        let busStopsWarning = "";
-        try {
-            const stopCount = await this.model.loadBusStops();
-            this.view.showBusStopCount(stopCount);
-        } catch (error) {
-            busStopsWarning = `No se cargó el catálogo de paradas: ${getErrorMessage(error)}`;
+        if (busStops) {
+            try {
+                this.model.displayBusStops(busStops);
+            } catch (error) {
+                busStopsWarning = `No se pudieron mostrar las paradas en el mapa: ${getErrorMessage(error)}`;
+            }
         }
         this.view.showStatus([
             savedTripError,

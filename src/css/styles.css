@@ -503,7 +503,8 @@ footer .brand-mark { border-radius: 7px 7px 7px 2px; font-size: 11px; height: 25
 .dashboard-grid .dashboard-card h2 { margin-bottom: 14px; }
 .route-map { background: #f5eeea; border: 1px solid var(--line); border-radius: 6px; height: 360px; overflow: hidden; }
 .route-map > div { height: 100%; width: 100%; }
-.route-map > .map-fallback-frame { border: 0; display: block; height: calc(100% - 43px); width: 100%; }
+.route-map > .map-fallback-leaflet { height: calc(100% - 43px); width: 100%; }
+.map-fallback-leaflet .leaflet-container { height: 100%; width: 100%; }
 .route-map > .map-fallback-note { background: var(--white); border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.5; margin: 0; padding: 8px 10px; }
 .map-fallback { align-items: center; color: var(--muted); display: flex; font-size: 12px; height: 100%; justify-content: center; margin: 0; padding: 24px; text-align: center; }
 .route-map + .secondary-button { margin-top: 12px; }

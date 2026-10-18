@@ -114,21 +114,19 @@ export class ChildView {
         this.busStopCount.textContent = `${count.toLocaleString("es-EC")} paradas de bus`;
     }
 
-    showMapFallback(message) {
-        const mapUrl = new URL("https://www.openstreetmap.org/export/embed.html");
-        mapUrl.searchParams.set("bbox", "-78.56,-0.30,-78.36,-0.08");
-        mapUrl.searchParams.set("layer", "mapnik");
+    showBusStopError() {
+        this.busStopCount.textContent = "No se pudieron cargar las paradas";
+    }
 
-        const frame = this.document.createElement("iframe");
-        frame.className = "map-fallback-frame";
-        frame.title = "Mapa de Quito, cortesía de OpenStreetMap";
-        frame.loading = "lazy";
-        frame.src = mapUrl.toString();
+    showMapFallback(message) {
+        const map = this.document.createElement("div");
+        map.className = "map-fallback-leaflet";
+        map.setAttribute("aria-label", "Mapa de Quito con paradas de bus");
 
         const note = this.document.createElement("p");
         note.className = "map-fallback-note";
         note.textContent = message;
-        this.mapElement.replaceChildren(frame, note);
+        this.mapElement.replaceChildren(map, note);
     }
 
     renderRoutes(response, onSelectRoute) {

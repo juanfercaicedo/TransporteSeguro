@@ -60,10 +60,18 @@ export class ChildModel {
     }
 
     async loadBusStops() {
+        return this.mapsService.fetchBusStops();
+    }
+
+    displayBusStops(busStops) {
         if (!this.maps || !this.map) {
             throw this.mapInitializationError || new Error("El mapa todavía se está inicializando.");
         }
-        return this.mapsService.loadBusStops(this.maps, this.map);
+        return this.mapsService.addBusStopsToMap(this.maps, this.map, busStops);
+    }
+
+    async initializeFallbackMap(element, busStops) {
+        return this.mapsService.createFallbackMap(element, busStops);
     }
 
     async getTransitRoutes(origin, destination) {
