@@ -39,11 +39,11 @@
         <section class="dashboard-card" aria-labelledby="route-heading">
           <h2 id="route-heading">¿Desde dónde sales y a dónde vas?</h2>
           <div class="route-controls">
-            <label class="field"><span>Mi ubicación o punto de partida</span><input type="text" id="origen" placeholder="Dirección, barrio o lugar en Quito" autocomplete="street-address" required></label>
-            <label class="field"><span>Destino</span><input type="text" id="destino" placeholder="Dirección, barrio o lugar en Quito" autocomplete="street-address" required></label>
+            <label class="field"><span>Mi ubicación o punto de partida</span><input type="text" id="origen" placeholder="Dirección o lugar en Quito, Ecuador" autocomplete="off" required></label>
+            <label class="field"><span>Destino</span><input type="text" id="destino" placeholder="Dirección o lugar en Quito, Ecuador" autocomplete="off" required></label>
             <button id="btnCalcular" class="primary-button" type="button">Buscar parada y ruta</button>
           </div>
-          <p class="privacy-note">Usa una dirección, barrio o lugar conocido. La ruta considera las paradas de subida y bajada y la caminata necesaria.</p>
+          <p class="privacy-note">Selecciona una sugerencia de Quito, Ecuador, o escribe la dirección manualmente. Solo se mostrarán recorridos cuyo origen y destino estén en Quito.</p>
           <p id="child-status" class="dashboard-status" role="status" aria-live="polite">Google Maps debe estar configurado para calcular rutas dentro de la app. Sin esa configuración, puedes abrir la búsqueda en Google Maps.</p>
           <a id="open-in-google-maps" class="maps-link" target="_blank" rel="noopener noreferrer" hidden>Abrir la ruta en Google Maps <span aria-hidden="true">↗</span></a>
         </section>
@@ -53,7 +53,9 @@
             <div id="map" class="route-map" role="region" aria-label="Mapa de la ruta elegida">
               <p class="map-fallback">Cargando mapa de Quito…</p>
             </div>
-            <p id="map-stop-legend" class="map-stop-legend" hidden><span aria-hidden="true"></span> Paradas del recorrido</p>
+            <p class="map-stop-legend"><span class="map-stop-dot" aria-hidden="true"></span><span id="bus-stop-count">Cargando paradas de bus…</span></p>
+            <p class="map-data-attribution">Datos de paradas: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a></p>
+            <p id="map-stop-legend" class="map-stop-legend" hidden><span class="map-stop-dot" aria-hidden="true"></span> Paradas del recorrido</p>
             <button id="btnShareLocation" class="secondary-button" type="button">Compartir mi ubicación actual</button>
             <button id="btnStopSharing" class="secondary-button" type="button" disabled>Dejar de compartir ubicación</button>
             <p class="privacy-note">La ubicación se solicita solo cuando pulsas compartir. Se guarda únicamente en este navegador; no se envía a un servidor.</p>
@@ -61,7 +63,11 @@
           <section class="dashboard-card" aria-labelledby="alternatives-heading">
             <h2 id="alternatives-heading">Alternativas</h2>
             <div id="route-options" class="route-options" aria-label="Rutas disponibles"></div>
-            <div id="instructions" class="directions-panel" aria-label="Pasos del recorrido"></div>
+            <div id="instructions" class="directions-panel" aria-label="Pasos del recorrido" hidden>
+              <div id="route-stop-summary"></div>
+              <h3 class="directions-heading">Indicaciones del recorrido</h3>
+              <div id="directions-text-panel"></div>
+            </div>
           </section>
         </section>
       </main>

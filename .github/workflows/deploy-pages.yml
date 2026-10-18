@@ -34,10 +34,11 @@ jobs:
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: |
-          mkdir -p _site/src/{config,controllers,css,html,js,models,services,views}
+          mkdir -p _site/src/{config,controllers,css,html,js,json,models,services,views}
           cp index.html _site/index.html
           cp src/css/styles.css _site/src/css/
           cp src/js/main.js _site/src/js/
+          cp src/json/*.json _site/src/json/
           cp src/config/*.js _site/src/config/
           cp src/controllers/*.js _site/src/controllers/
           cp src/models/*.js _site/src/models/

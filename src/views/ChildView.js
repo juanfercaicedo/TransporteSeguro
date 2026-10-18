@@ -7,11 +7,14 @@ export class ChildView {
         this.calculateButton = this.document.getElementById("btnCalcular");
         this.locationButton = this.document.getElementById("btnShareLocation");
         this.stopSharingButton = this.document.getElementById("btnStopSharing");
-        this.instructionsPanel = this.document.getElementById("instructions");
         this.statusElement = this.document.getElementById("child-status");
         this.mapsLink = this.document.getElementById("open-in-google-maps");
         this.routesPanel = this.document.getElementById("route-options");
+        this.instructionsPanel = this.document.getElementById("instructions");
+        this.directionsPanel = this.document.getElementById("directions-text-panel");
+        this.stopSummaryPanel = this.document.getElementById("route-stop-summary");
         this.stopMarkerLegend = this.document.getElementById("map-stop-legend");
+        this.busStopCount = this.document.getElementById("bus-stop-count");
         this.settingsDialog = this.document.getElementById("child-settings");
         this.profileSelect = this.document.getElementById("active-child-profile");
         this.profileName = this.document.getElementById("active-child-name");
@@ -107,6 +110,10 @@ export class ChildView {
         this.stopMarkerLegend.hidden = !isVisible;
     }
 
+    showBusStopCount(count) {
+        this.busStopCount.textContent = `${count.toLocaleString("es-EC")} paradas de bus`;
+    }
+
     showMapFallback(message) {
         const mapUrl = new URL("https://www.openstreetmap.org/export/embed.html");
         mapUrl.searchParams.set("bbox", "-78.56,-0.30,-78.36,-0.08");
@@ -185,19 +192,22 @@ export class ChildView {
 
     describeRoute(route) {
         const duration = route.legs.reduce((total, leg) => total + (leg.duration?.value || 0), 0);
+        const distance = route.legs.reduce((total, leg) => total + (leg.distance?.value || 0), 0);
         const transfers = route.legs.reduce((total, leg) =>
             total + leg.steps.filter((step) => step.travel_mode === "TRANSIT").length, 0
         );
         const minutes = Math.round(duration / 60);
         const transferCount = Math.max(0, transfers - 1);
-        return `${minutes} min aprox. · ${transferCount} transbordo${transferCount === 1 ? "" : "s"}`;
+        const distanceLabel = distance > 0
+            ? `${(distance / 1000).toLocaleString("es-EC", { maximumFractionDigits: 1 })} km`
+            : "Distancia no disponible";
+        return `${minutes} min aprox. · ${distanceLabel} · ${transferCount} transbordo${transferCount === 1 ? "" : "s"}`;
     }
 
     showRouteDetails(response, routeIndex) {
         const route = response.routes[routeIndex];
         const stops = this.getTransitStops(route);
-        const list = this.document.createElement("ol");
-        list.className = "directions-list";
+        this.instructionsPanel.hidden = false;
         if (stops.first) {
             const stopSummary = this.document.createElement("section");
             stopSummary.className = "route-stop-summary";
@@ -222,25 +232,10 @@ export class ChildView {
             arrivalName.textContent = stops.last.transit.arrival_stop?.name || "Parada no disponible";
             arrival.append(arrivalLabel, arrivalName);
             stopSummary.append(boarding, arrival);
-            this.instructionsPanel.replaceChildren(stopSummary);
+            this.stopSummaryPanel.replaceChildren(stopSummary);
         } else {
-            this.instructionsPanel.replaceChildren();
+            this.stopSummaryPanel.replaceChildren();
         }
-        route.legs.forEach((leg) => {
-            leg.steps.forEach((step) => {
-                const item = this.document.createElement("li");
-                const description = this.document.createElement("span");
-                if (step.transit) {
-                    const transit = step.transit;
-                    description.textContent = `${transit.line?.short_name || transit.line?.name || "Transporte público"} · ${transit.departure_stop?.name || "Salida"} → ${transit.arrival_stop?.name || "Llegada"}`;
-                } else {
-                    description.textContent = step.instructions?.replace(/<[^>]*>/g, "") || "Camina hasta el siguiente punto.";
-                }
-                item.append(description);
-                list.append(item);
-            });
-        });
-        this.instructionsPanel.append(list);
     }
 
     showShareStatus(isSharing) {

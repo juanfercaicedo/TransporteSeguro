@@ -44,13 +44,36 @@ export class ChildController {
             savedTripError = getErrorMessage(error);
         }
         try {
-            await this.model.initializeMap(this.view.mapElement);
-            this.view.showStatus(savedTripError || "Escribe origen y destino para buscar rutas.", Boolean(savedTripError));
+            await this.model.initializeMap(this.view.mapElement, this.view.directionsPanel);
         } catch (error) {
             const mapError = `${getErrorMessage(error)} Al buscar, podrás abrir el recorrido en Google Maps.`;
             this.view.showMapFallback("Mapa de Quito · OpenStreetMap. El cálculo de rutas dentro de la app requiere configurar Google Maps.");
             this.view.showStatus([savedTripError, mapError].filter(Boolean).join(" "), true);
+            return;
         }
+
+        let autocompleteWarning = "";
+        try {
+            this.model.initializeAddressAutocomplete(this.view.originInput);
+            this.model.initializeAddressAutocomplete(this.view.destinationInput);
+        } catch (error) {
+            autocompleteWarning = `No se pudieron activar las sugerencias: ${getErrorMessage(error)} Puedes escribir las direcciones manualmente.`;
+        }
+        let busStopsWarning = "";
+        try {
+            const stopCount = await this.model.loadBusStops();
+            this.view.showBusStopCount(stopCount);
+        } catch (error) {
+            busStopsWarning = `No se cargó el catálogo de paradas: ${getErrorMessage(error)}`;
+        }
+        this.view.showStatus([
+            savedTripError,
+            autocompleteWarning,
+            busStopsWarning,
+            !savedTripError && !autocompleteWarning && !busStopsWarning
+                ? "Escribe o selecciona una dirección de Quito para el origen y el destino."
+                : ""
+        ].filter(Boolean).join(" "), Boolean(savedTripError || autocompleteWarning || busStopsWarning));
     }
 
     handleProfilesUpdate(profiles, activeProfileId) {

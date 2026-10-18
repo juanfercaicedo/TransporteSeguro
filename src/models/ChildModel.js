@@ -8,6 +8,7 @@ export class ChildModel {
         this.map = null;
         this.renderer = null;
         this.transitStopMarkers = [];
+        this.addressAutocompletes = [];
         this.currentTrip = null;
         this.childProfile = null;
         this.mapInitializationError = null;
@@ -37,9 +38,9 @@ export class ChildModel {
         return this.currentTrip;
     }
 
-    async initializeMap(element) {
+    async initializeMap(element, directionsPanel) {
         try {
-            const mapData = await this.mapsService.createTransitMap(element);
+            const mapData = await this.mapsService.createTransitMap(element, directionsPanel);
             this.maps = mapData.maps;
             this.map = mapData.map;
             this.renderer = mapData.renderer;
@@ -47,6 +48,22 @@ export class ChildModel {
             this.mapInitializationError = error;
             throw error;
         }
+    }
+
+    initializeAddressAutocomplete(input) {
+        if (!this.maps) {
+            throw this.mapInitializationError || new Error("Google Maps todavía se está inicializando.");
+        }
+        const autocomplete = this.mapsService.createAddressAutocomplete(this.maps, input);
+        this.addressAutocompletes.push(autocomplete);
+        return autocomplete;
+    }
+
+    async loadBusStops() {
+        if (!this.maps || !this.map) {
+            throw this.mapInitializationError || new Error("El mapa todavía se está inicializando.");
+        }
+        return this.mapsService.loadBusStops(this.maps, this.map);
     }
 
     async getTransitRoutes(origin, destination) {

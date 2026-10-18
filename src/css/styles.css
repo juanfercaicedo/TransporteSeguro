@@ -509,7 +509,9 @@ footer .brand-mark { border-radius: 7px 7px 7px 2px; font-size: 11px; height: 25
 .route-map + .secondary-button { margin-top: 12px; }
 .map-stop-legend { align-items: center; color: var(--muted); display: flex; font-size: 10px; gap: 7px; margin: 9px 0 0; }
 .map-stop-legend[hidden] { display: none; }
-.map-stop-legend span { background: #1b9b5a; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 1px #1b9b5a; height: 9px; width: 9px; }
+.map-stop-dot { background: #1b9b5a; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 1px #1b9b5a; flex: 0 0 9px; height: 9px; width: 9px; }
+.map-data-attribution { color: var(--muted); font-size: 9px; margin: 4px 0 10px; }
+.map-data-attribution a { color: inherit; }
 .route-map ~ .secondary-button + .secondary-button { margin-left: 7px; }
 .privacy-note { color: var(--muted); font-size: 11px; line-height: 1.6; margin: 10px 0 0; }
 .maps-link { color: var(--green); display: inline-block; font-size: 12px; font-weight: 700; margin-top: 10px; text-decoration: none; }
@@ -525,8 +527,14 @@ footer .brand-mark { border-radius: 7px 7px 7px 2px; font-size: 11px; height: 25
 .route-stop-summary strong { color: var(--green); font-size: 11px; }
 .route-stop-summary span { font-size: 12px; font-weight: 700; }
 .route-stop-summary small { color: var(--muted); font-size: 10px; }
-.directions-list { color: var(--ink); font-size: 11px; line-height: 1.6; margin: 15px 0 0; padding-left: 18px; }
-.directions-list li { padding: 5px 0; }
+.directions-panel { margin-top: 12px; }
+.directions-panel:empty { display: none; }
+.directions-heading { font-size: 13px; margin: 14px 0 4px; }
+.directions-panel .adp { color: var(--ink); font-family: "DM Sans", sans-serif; font-size: 11px; line-height: 1.55; }
+.directions-panel .adp-placemark { background: #fff5f3; border-color: var(--line); }
+.directions-panel .adp-summary { font-size: 11px; font-weight: 700; padding: 10px 0; }
+.directions-panel .adp-step, .directions-panel .adp-substep { padding: 8px 5px; }
+.directions-panel .adp-text { color: var(--ink); font-size: 11px; }
 .role-page { padding-top: 72px; }
 .role-page h1 { max-width: 650px; }
 .role-cards { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 28px; max-width: 850px; }
@@ -613,6 +621,10 @@ footer .brand-mark { border-radius: 7px 7px 7px 2px; font-size: 11px; height: 25
 .active-child-label { align-items: center; display: flex; font-size: 10px !important; gap: 4px; margin-top: 10px !important; }
 .active-child-label strong { color: var(--green); }
 .settings-trigger { flex: 0 0 auto; min-height: 36px; padding: 0 10px; }
+.pac-container { border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px rgba(57, 33, 38, .16); font-family: "DM Sans", sans-serif; margin-top: 4px; overflow: hidden; z-index: 1100; }
+.pac-item { border-top-color: #f2e7e5; color: var(--ink); cursor: pointer; font-size: 11px; line-height: 1.5; padding: 8px 10px; }
+.pac-item:hover, .pac-item-selected { background: #fff5f3; }
+.pac-item-query { color: var(--ink); font-size: 11px; }
 
 @keyframes settings-enter {
   from { opacity: 0; transform: translateY(8px) scale(.98); }
@@ -738,6 +750,8 @@ body.phone-preview-page {
 .phone-app-content .dashboard-status { font-size: 11px; margin-top: 10px; }
 .phone-app-content .dashboard-grid { gap: 12px; margin-top: 12px; }
 .phone-app-content .route-map { border-radius: 9px; height: 245px; }
+.phone-app-content .directions-panel .adp { font-size: 10px; }
+.phone-app-content .directions-panel .adp-text { font-size: 10px; }
 .phone-app-content .route-map ~ .secondary-button + .secondary-button { margin: 8px 0 0; }
 .phone-app-content .privacy-note { font-size: 10px; }
 
